@@ -92,6 +92,10 @@ export default function FaqChatbot() {
   const isBusy = status === "submitted" || status === "streaming";
   const safeInput = typeof input === "string" ? input : "";
 
+  const handleInput = (event) => {
+    setInput(event.target.value);
+  };
+
   useEffect(() => {
     bottomRef.current?.scrollIntoView({ behavior: "smooth", block: "end" });
   }, [parsedMessages.length, isBusy]);
@@ -160,7 +164,7 @@ export default function FaqChatbot() {
               name="prompt"
               rows={2}
               value={safeInput}
-              onChange={handleInputChange}
+              onChange={handleInput}
               onKeyDown={(event) => {
                 if (event.key === "Enter" && !event.shiftKey) {
                   event.preventDefault();

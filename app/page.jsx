@@ -11,7 +11,6 @@ gsap.registerPlugin(ScrollTrigger, useGSAP);
 
 export default function Home() {
   const containerRef = useRef(null);
-  const heroRef = useRef(null);
   const contentRef = useRef(null);
 
   useGSAP(
@@ -27,21 +26,6 @@ export default function Home() {
           stagger: 0.08,
         },
       );
-
-      gsap.to(heroRef.current, {
-        scale: 0.92,
-        autoAlpha: 0,
-        y: -48,
-        ease: "none",
-        scrollTrigger: {
-          trigger: containerRef.current,
-          start: "top top",
-          end: "+=120%",
-          scrub: 1,
-          pin: true,
-          pinSpacing: false,
-        },
-      });
 
       gsap.fromTo(
         contentRef.current,
@@ -64,10 +48,7 @@ export default function Home() {
 
   return (
     <main ref={containerRef} className="relative min-h-screen bg-zinc-950 text-zinc-100">
-      <section
-        ref={heroRef}
-        className="relative z-0 flex h-dvh w-full flex-col justify-center overflow-hidden px-6 py-12 md:px-12 lg:px-24"
-      >
+      <section className="relative z-0 flex h-dvh w-full flex-col justify-center overflow-hidden px-6 py-12 md:px-12 lg:px-24">
         <div className="absolute inset-0 bg-[radial-gradient(120%_90%_at_50%_0%,rgba(56,189,248,0.16),rgba(0,0,0,0)_58%)]" />
         <div className="relative max-w-5xl">
           <p className="hero-reveal mb-6 text-xs font-semibold uppercase tracking-[0.36em] text-zinc-500">
@@ -93,8 +74,6 @@ export default function Home() {
           </motion.div>
         </div>
       </section>
-
-      <div className="h-[115vh]" />
 
       <section ref={contentRef} className="relative z-10 px-4 pb-20 md:px-8 md:pb-28">
         <div className="mx-auto max-w-5xl">
