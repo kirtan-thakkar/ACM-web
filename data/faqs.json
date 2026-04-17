@@ -1,0 +1,44 @@
+[
+  {
+    "id": "faq-pricing-001",
+    "question": "What pricing plans are available?",
+    "answer": "We offer Starter, Pro, and Enterprise plans. Starter is ideal for individuals, Pro is for growing teams, and Enterprise includes SSO, audit logs, and custom support SLAs.",
+    "tags": ["pricing", "plans", "subscription"],
+    "source": "pricing"
+  },
+  {
+    "id": "faq-trial-001",
+    "question": "Do you provide a free trial?",
+    "answer": "Yes. We provide a 14-day free trial with full access to Pro features. No credit card is required to start.",
+    "tags": ["trial", "billing"],
+    "source": "billing"
+  },
+  {
+    "id": "faq-support-001",
+    "question": "How can I contact support?",
+    "answer": "You can contact support via in-app chat or email support@example.com. Enterprise customers also receive a dedicated Slack channel.",
+    "tags": ["support", "contact", "enterprise"],
+    "source": "support"
+  },
+  {
+    "id": "faq-refund-001",
+    "question": "What is your refund policy?",
+    "answer": "If you cancel within 7 days of your first paid invoice, we can issue a full refund. After that window, we offer prorated credits in special cases.",
+    "tags": ["refund", "billing", "policy"],
+    "source": "billing"
+  },
+  {
+    "id": "faq-security-001",
+    "question": "How do you handle security and data privacy?",
+    "answer": "We encrypt data in transit and at rest, enforce least-privilege access, and run regular security reviews. For privacy requests, email privacy@example.com.",
+    "tags": ["security", "privacy", "compliance"],
+    "source": "security"
+  },
+  {
+    "id": "faq-integrations-001",
+    "question": "Which integrations are supported?",
+    "answer": "We support integrations with Slack, GitHub, Notion, and Google Workspace. Enterprise customers can request additional custom integrations.",
+    "tags": ["integrations", "slack", "github", "notion"],
+    "source": "integrations"
+  }
+]

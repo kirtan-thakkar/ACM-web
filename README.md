@@ -1,36 +1,55 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
+# AI FAQ Chatbot (Groq + Vercel AI SDK)
 
-## Getting Started
+Competition-ready FAQ chatbot with:
 
-First, run the development server:
+- Streaming chat interface (message history + typing state)
+- Retrieval-augmented responses (local vector store)
+- Audio transcription input (`/api/transcribe`)
+- Speech output (`/api/speech` with provider fallback)
+- Sequential generation pipeline for stronger answer quality
+
+## Stack
+
+- Next.js App Router
+- Vercel AI SDK (`ai`, `@ai-sdk/react`)
+- Groq provider (`@ai-sdk/groq`) for chat + transcription
+- Optional OpenAI provider (`@ai-sdk/openai`) for server TTS speech generation
+
+## Setup
+
+1. Copy environment template and fill keys:
 
 ```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
+cp .env.example .env.local
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+2. Install dependencies and run dev server:
 
-You can start editing the page by modifying `app/page.js`. The page auto-updates as you edit the file.
+```bash
+npm install
+npm run dev
+```
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+3. Open `http://localhost:3000`.
 
-## Learn More
+## Sequential Generation Flow
 
-To learn more about Next.js, take a look at the following resources:
+The chat route uses a 3-step sequential chain before final streaming:
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+1. Rewrite user question into a retrieval-focused query.
+2. Retrieve FAQ snippets from the vector store and format context.
+3. Summarize snippets into planning bullets for the final response model.
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+Then it streams the final answer with context-grounded system instructions.
 
-## Deploy on Vercel
+## API Routes
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+- `POST /api/chat`: streaming chat with tool-assisted FAQ search.
+- `POST /api/transcribe`: uploads audio and returns transcript text.
+- `POST /api/speech`: text-to-speech audio generation (requires `OPENAI_API_KEY`).
+- `POST /api/rag/reindex`: rebuilds local FAQ vector index.
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+## Notes
+
+- Groq does not provide embedding models via the AI SDK provider API today. This project uses a deterministic local vectorization fallback for RAG retrieval.
+- If `OPENAI_API_KEY` is not set, speech playback falls back to browser Speech Synthesis on the client.

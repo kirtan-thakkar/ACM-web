@@ -1,118 +1,119 @@
 "use client";
 
-import { useRef, useState } from "react";
-import { motion, useMotionValue, useSpring, useTransform, AnimatePresence } from "motion/react";
-import { LightningBoltIcon, MixIcon, ArrowRightIcon, BoxModelIcon } from "@radix-ui/react-icons";
+import { motion } from "motion/react";
+import { LightningBoltIcon, GlobeIcon, SpeakerLoudIcon } from "@radix-ui/react-icons";
+import { Mic } from "lucide-react";
 
-// Magnetic Button Component
-function MagneticButton({ children, onClick, className = "" }) {
-  const ref = useRef(null);
-  const x = useMotionValue(0);
-  const y = useMotionValue(0);
-  
-  const springX = useSpring(x, { stiffness: 150, damping: 15, mass: 0.1 });
-  const springY = useSpring(y, { stiffness: 150, damping: 15, mass: 0.1 });
-
-  const handleMouseMove = (e) => {
-    if (!ref.current) return;
-    const { left, top, width, height } = ref.current.getBoundingClientRect();
-    const center = { x: left + width / 2, y: top + height / 2 };
-    const distance = { x: e.clientX - center.x, y: e.clientY - center.y };
-    
-    x.set(distance.x * 0.2);
-    y.set(distance.y * 0.2);
-  };
-
-  const handleMouseLeave = () => {
-    x.set(0);
-    y.set(0);
-  };
-
+// 1. RAG Retrieval Card
+function RagCard() {
   return (
-    <motion.button
-      ref={ref}
-      onMouseMove={handleMouseMove}
-      onMouseLeave={handleMouseLeave}
-      onClick={onClick}
-      style={{ x: springX, y: springY }}
-      whileTap={{ scale: 0.95 }}
-      className={`relative flex items-center justify-center gap-2 overflow-hidden rounded-full px-6 py-3 font-medium transition-colors ${className}`}
-    >
-      {children}
-    </motion.button>
-  );
-}
-
-// Perpetual Motion Card - Infinite Shimmer
-function ShimmerCard() {
-  return (
-    <div className="liquid-glass relative flex h-[300px] flex-col overflow-hidden rounded-[2.5rem] p-8 md:col-span-2">
+    <div className="group relative flex h-[450px] flex-col overflow-hidden rounded-[3rem] p-10 bg-white border border-zinc-100 shadow-xl shadow-zinc-100/50 md:col-span-2 transition-all hover:shadow-2xl hover:shadow-blue-100/50">
       <div className="relative z-10 flex flex-col justify-between h-full">
-        <div className="flex items-center gap-3">
-          <div className="flex h-10 w-10 items-center justify-center rounded-full bg-white/10">
-            <LightningBoltIcon className="text-white w-5 h-5" />
-          </div>
-          <span className="text-sm font-mono text-zinc-400 tracking-tight">ENGINE.STATUS</span>
-        </div>
         <div>
-          <h3 className="text-2xl font-medium tracking-tight text-white mb-2">Perpetual Dynamics</h3>
-          <p className="text-zinc-400 max-w-sm">Fluid animations that never stop, providing a living, breathing interface.</p>
+          <div className="mb-6 flex h-12 w-12 items-center justify-center rounded-2xl bg-blue-50 text-blue-600 ring-1 ring-blue-100">
+            <GlobeIcon className="size-6" />
+          </div>
+          <h3 className="text-4xl font-bold tracking-tight text-zinc-950 mb-4 leading-none">Augmented Context.</h3>
+          <p className="text-zinc-500 max-w-sm text-lg leading-relaxed">
+            Every response is grounded in your specific documentation with zero hallucination.
+          </p>
+        </div>
+        <div className="flex gap-2">
+          {["PDF", "JSON", "DOCS"].map(tag => (
+            <span key={tag} className="text-[10px] font-bold border border-zinc-100 bg-zinc-50 px-3 py-1.5 rounded-full text-zinc-400 uppercase tracking-widest">
+              {tag}
+            </span>
+          ))}
         </div>
       </div>
       
-      {/* Ambient background shimmer loop */}
-      <motion.div 
-        className="absolute -inset-[100%] z-0 bg-gradient-to-r from-transparent via-white/[0.05] to-transparent opacity-50"
-        animate={{ x: ["0%", "100%", "0%"] }}
-        transition={{ duration: 15, repeat: Infinity, ease: "linear" }}
-        style={{ transform: "rotate(15deg)" }}
-      />
+      {/* Decorative RAG visualization */}
+      <div className="absolute right-[-5%] bottom-[-5%] p-10 opacity-5 group-hover:opacity-10 transition-opacity rotate-12">
+        <div className="grid grid-cols-4 gap-2">
+          {Array.from({ length: 16 }).map((_, i) => (
+            <motion.div 
+              key={i}
+              animate={{ scale: [1, 1.2, 1], opacity: [0.3, 1, 0.3] }}
+              transition={{ duration: 2, repeat: Infinity, delay: i * 0.1 }}
+              className="size-12 bg-blue-600 rounded-xl"
+            />
+          ))}
+        </div>
+      </div>
     </div>
   );
 }
 
-// Perpetual Motion Card - Live Status
-function LiveStatusCard() {
+// 2. Groq Speed Card
+function SpeedCard() {
   return (
-    <div className="liquid-glass relative flex h-[300px] flex-col items-center justify-center rounded-[2.5rem] p-8 overflow-hidden">
-      <div className="flex flex-col items-center gap-6">
+    <div className="relative flex h-[450px] flex-col items-center justify-center rounded-[3rem] p-10 bg-white border border-zinc-100 shadow-xl shadow-zinc-100/50 transition-all hover:shadow-2xl hover:shadow-blue-100/50 overflow-hidden">
+      <div className="flex flex-col items-center gap-8 text-center">
         <div className="relative flex items-center justify-center">
           <motion.div
-            className="absolute h-24 w-24 rounded-full border border-emerald-500/30"
-            animate={{ scale: [1, 1.5, 1], opacity: [0.8, 0, 0.8] }}
-            transition={{ duration: 3, repeat: Infinity, ease: "easeInOut" }}
+            className="absolute h-40 w-40 rounded-full border border-blue-100"
+            animate={{ scale: [1, 1.3, 1], opacity: [1, 0, 1] }}
+            transition={{ duration: 3, repeat: Infinity }}
           />
-          <motion.div
-            className="absolute h-16 w-16 rounded-full border border-emerald-500/50"
-            animate={{ scale: [1, 1.3, 1], opacity: [0.8, 0, 0.8] }}
-            transition={{ duration: 3, repeat: Infinity, ease: "easeInOut", delay: 0.5 }}
-          />
-          <div className="relative z-10 h-8 w-8 rounded-full bg-emerald-500 shadow-[0_0_20px_rgba(16,185,129,0.5)]" />
+          <div className="relative z-10 flex h-20 w-20 items-center justify-center rounded-3xl bg-blue-600 text-white shadow-2xl shadow-blue-200">
+            <LightningBoltIcon className="size-10" />
+          </div>
         </div>
-        <div className="text-center">
-          <h3 className="text-xl font-medium text-white mb-1">System Optimal</h3>
-          <span className="text-sm font-mono text-emerald-500">99.9% UPTIME</span>
+        <div>
+          <h3 className="text-2xl font-bold text-zinc-950 mb-2 tracking-tight">LPU Powered</h3>
+          <p className="text-[11px] font-bold text-blue-600 uppercase tracking-widest mb-6">500+ Tokens / Sec</p>
+          <p className="text-zinc-500 leading-relaxed">Streaming responses that feel instant and natural.</p>
         </div>
       </div>
     </div>
   );
 }
 
-// Asymmetric Card - 70/30 Split focus
-function ContextualCard() {
+// 3. Multimodal Card
+function MultimodalCard() {
   return (
-    <div className="liquid-glass relative flex h-[400px] flex-col justify-end overflow-hidden rounded-[2.5rem] p-8 md:col-span-3">
-      <div className="absolute top-8 right-8 text-zinc-600">
-        <MixIcon className="w-24 h-24 opacity-20" />
+    <div className="group relative flex h-[400px] flex-col justify-between overflow-hidden rounded-[3rem] p-10 bg-zinc-950 text-white shadow-2xl">
+      <div className="flex items-center justify-between">
+        <div className="flex h-12 w-12 items-center justify-center rounded-2xl bg-white/10 text-white border border-white/10">
+          <Mic className="size-6" />
+        </div>
+        <SpeakerLoudIcon className="size-6 text-zinc-600" />
       </div>
-      <div className="max-w-xl z-10">
-        <h2 className="text-4xl md:text-5xl font-medium tracking-tighter text-white mb-6 leading-tight">
-          Designed for the rare intersection of beauty and performance.
+      <div>
+        <h3 className="text-3xl font-bold tracking-tight text-white mb-3">Multimodal.</h3>
+        <p className="text-zinc-400 leading-relaxed">Native transcription and neural text-to-speech built in.</p>
+      </div>
+      
+      {/* Waveform visualization */}
+      <div className="flex items-end gap-1.5 h-16 mt-6">
+        {Array.from({ length: 24 }).map((_, i) => (
+          <motion.div
+            key={i}
+            animate={{ height: [10, Math.random() * 50 + 10, 10] }}
+            transition={{ duration: 1, repeat: Infinity, delay: i * 0.05 }}
+            className="w-1.5 bg-blue-500 rounded-full"
+          />
+        ))}
+      </div>
+    </div>
+  );
+}
+
+// 4. Intelligence Card
+function IntelligenceCard() {
+  return (
+    <div className="relative flex h-[400px] flex-col justify-end overflow-hidden rounded-[3rem] p-10 bg-white border border-zinc-100 shadow-xl shadow-zinc-100/50 md:col-span-2 transition-all hover:shadow-2xl hover:shadow-blue-100/50">
+      <div className="absolute top-10 right-10 flex h-24 w-24 items-center justify-center rounded-full bg-blue-50 text-blue-600 opacity-20 group-hover:opacity-40 transition-all rotate-12">
+        <LightningBoltIcon className="size-16" />
+      </div>
+      <div className="max-w-md z-10">
+        <h2 className="text-4xl font-bold tracking-tight text-zinc-950 mb-6 leading-[1.1]">
+          Calculated Logic. <br />
+          <span className="text-blue-600">Human Feel.</span>
         </h2>
-        <MagneticButton className="bg-white text-zinc-950 hover:bg-zinc-200">
-          <span>Explore Architecture</span>
-          <ArrowRightIcon />
-        </MagneticButton>
+        <p className="text-zinc-500 text-lg leading-relaxed">
+          The perfect balance between high-frequency computation and high-fidelity interface design.
+        </p>
       </div>
     </div>
   );
@@ -120,12 +121,13 @@ function ContextualCard() {
 
 export default function BentoGrid() {
   return (
-    <section className="relative w-full bg-[#09090b] py-32 px-4">
-      <div className="mx-auto max-w-6xl">
-        <div className="grid grid-cols-1 gap-6 md:grid-cols-3">
-          <ShimmerCard />
-          <LiveStatusCard />
-          <ContextualCard />
+    <section className="relative w-full px-6 md:px-12 lg:px-24">
+      <div className="mx-auto max-w-7xl">
+        <div className="grid grid-cols-1 gap-8 md:grid-cols-3">
+          <RagCard />
+          <SpeedCard />
+          <MultimodalCard />
+          <IntelligenceCard />
         </div>
       </div>
     </section>
