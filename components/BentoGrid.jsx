@@ -102,11 +102,18 @@ function MultimodalCard() {
 // 4. Intelligence Card
 function IntelligenceCard() {
   return (
-    <div className="relative flex h-[400px] flex-col justify-end overflow-hidden rounded-[3rem] p-10 bg-white border border-zinc-100 shadow-xl shadow-zinc-100/50 md:col-span-2 transition-all hover:shadow-2xl hover:shadow-blue-100/50">
-      <div className="absolute top-10 right-10 flex h-24 w-24 items-center justify-center rounded-full bg-blue-50 text-blue-600 opacity-20 group-hover:opacity-40 transition-all rotate-12">
+    <div className="group relative flex h-[400px] flex-col justify-end overflow-hidden rounded-[3rem] p-10 bg-white border border-zinc-100 shadow-xl shadow-zinc-100/50 md:col-span-2 transition-all hover:shadow-2xl hover:shadow-blue-100/50">
+      <div className="absolute top-10 right-10 flex h-24 w-24 items-center justify-center rounded-full bg-blue-50 text-blue-600 opacity-20 group-hover:opacity-100 group-hover:rotate-12 transition-all duration-700">
         <LightningBoltIcon className="size-16" />
       </div>
+      
+      <div className="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-transparent via-blue-500/20 to-transparent scale-x-0 group-hover:scale-x-100 transition-transform duration-1000" />
+      
       <div className="max-w-md z-10">
+        <div className="flex items-center gap-2 mb-4 opacity-0 group-hover:opacity-100 transition-opacity duration-700">
+          <div className="h-1 w-1 rounded-full bg-blue-600" />
+          <span className="text-[10px] font-bold uppercase tracking-widest text-blue-600">Cognitive Layer</span>
+        </div>
         <h2 className="text-4xl font-bold tracking-tight text-zinc-950 mb-6 leading-[1.1]">
           Calculated Logic. <br />
           <span className="text-blue-600">Human Feel.</span>
